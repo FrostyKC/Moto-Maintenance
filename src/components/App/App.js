@@ -21,6 +21,8 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 
 import './App.css';
+import MyGaragePage from '../MyGaragePage/MyGaragePage';
+import AddVehiclePage from '../AddVehiclePage/AddVehiclePage';
 
 class App extends Component {
   componentDidMount() {
@@ -91,6 +93,13 @@ class App extends Component {
               path="/home"
               component={LandingPage}
               authRedirect="/user"
+            />
+
+            <ProtectedRoute exact path="/garage" component={MyGaragePage} />
+            <ProtectedRoute
+              exact
+              path="/addvehicle"
+              component={AddVehiclePage}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}
