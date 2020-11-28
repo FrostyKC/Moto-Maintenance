@@ -19,6 +19,7 @@ class AddVehiclePage extends Component {
     newVehicle: {
       name: '',
       image: '',
+      user_id: this.props.store.user.id,
     },
     newOil: {
       date: new Date(),
@@ -80,6 +81,14 @@ class AddVehiclePage extends Component {
       type: 'POST_VEHICLES',
       payload: this.state.newVehicle,
     });
+    // this.props.dispatch({
+    //   type: 'POST_OIL',
+    //   payload: this.state.newOil,
+    // });
+    // this.props.dispatch({
+    //   type: 'POST_TIRES',
+    //   payload: this.state.newTires,
+    // });
     this.props.history.push('/garage');
   };
 

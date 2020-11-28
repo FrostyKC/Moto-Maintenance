@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
+const {
+  rejectUnauthenticated,
+} = require('../modules/authentication-middleware');
 
-router.get('/', (req, res) => {
-  const queryText = 'SELECT * FROM vehicles;';
+router.get('/', rejectUnauthenticated, (req, res) => {
+  const queryText = 'SELECT * FROM vehicles WHERE "user_id" = $1;';
   pool
-    .query(queryText)
+    .query(queryText, [req.user.id])
     .then((result) => {
       res.send(result.rows);
     })
@@ -16,8 +19,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const queryText = `INSERT INTO vehicles ("name", "image") VALUES ($1, $2);`;
-  const queryValues = [req.body.name, req.body.image];
+  const queryText = `INSERT INTO vehicles ("name", "image", "user_id") VALUES ($1, $2, $3);`;
+  const queryValues = [req.body.name, req.body.image, req.body.user_id];
   pool
     .query(queryText, queryValues)
     .then(() => {
