@@ -46,10 +46,63 @@ class VehicleListItem extends Component {
               <Typography gutterBottom variant="h5" component="h2">
                 {this.props.vehicleItem.name}
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                oil:{this.props.vehicleItem.oil_left} Tires:
-                {this.props.vehicleItem.tires_left}
+              <Typography
+                variant="subtitle1"
+                color="textPrimary"
+                component="p"
+                display="inline"
+              >
+                Oil: {}
               </Typography>
+
+              {this.props.vehicleItem.oil_left >
+              this.props.vehicleItem.oil_allowed * 0.2 ? (
+                <Typography
+                  variant="body1"
+                  style={{ color: 'green' }}
+                  component="p"
+                  display="inline"
+                >
+                  {this.props.vehicleItem.oil_left} mi {}
+                </Typography>
+              ) : (
+                <Typography
+                  variant="body1"
+                  style={{ color: 'red' }}
+                  component="p"
+                  display="inline"
+                >
+                  {this.props.vehicleItem.oil_left} mi {}
+                </Typography>
+              )}
+              <Typography
+                variant="subtitle1"
+                color="textPrimary"
+                display="inline"
+                component="p"
+              >
+                Tires: {}
+              </Typography>
+              {this.props.vehicleItem.tires_left >
+              this.props.vehicleItem.tires_allowed * 0.2 ? (
+                <Typography
+                  variant="body1"
+                  style={{ color: 'green' }}
+                  component="p"
+                  display="inline"
+                >
+                  {this.props.vehicleItem.tires_left} mi {}
+                </Typography>
+              ) : (
+                <Typography
+                  variant="body1"
+                  style={{ color: 'red' }}
+                  component="p"
+                  display="inline"
+                >
+                  {this.props.vehicleItem.tires_left} mi {}
+                </Typography>
+              )}
             </CardContent>
           </CardActionArea>
         </Card>
