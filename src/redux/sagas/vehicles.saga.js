@@ -19,6 +19,25 @@ function* getVehicles(action) {
   }
 }
 
+function* getVehicleDetails(action) {
+  try {
+    yield put({ type: 'ERROR_RESET' });
+    const vehicleDetails = yield axios.get(
+      `/api/vehicles/details/${action.payload}`
+    );
+    yield put({
+      type: 'SET_VEHICLE_DETAILS',
+      payload: vehicleDetails.data,
+    });
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: 'ERROR_MSG',
+      payload: 'There was a problem loading vehicles. Please try again.',
+    });
+  }
+}
+
 function* postVehicles(action) {
   try {
     yield put({ type: 'ERROR_RESET' });
@@ -37,6 +56,7 @@ function* postVehicles(action) {
 
 function* vehicleSaga() {
   yield takeLatest('GET_VEHICLES', getVehicles);
+  yield takeLatest('GET_VEHICLE_DETAILS', getVehicleDetails);
   yield takeLatest('POST_VEHICLES', postVehicles);
 }
 

@@ -7,14 +7,18 @@ import mapStoreToProps from '../../redux/mapStoreToProps';
 // the component name TemplateClass with the name for the new
 // component.
 class VehicleDetailsPage extends Component {
-  state = {
-    heading: 'Vehicle Details',
-  };
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'GET_VEHICLE_DETAILS',
+      payload: this.props.match.params.id,
+    });
+    console.log(this.props.store.vehicleDetails);
+  }
 
   render() {
     return (
       <div>
-        <h2>{this.state.heading}</h2>
+        <h2>{this.props.store.vehicleDetails.name}</h2>
       </div>
     );
   }
