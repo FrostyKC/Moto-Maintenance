@@ -19,17 +19,50 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const queryText = `INSERT INTO vehicles ("name", "image", "user_id") VALUES ($1, $2, $3);`;
+  const queryText = `INSERT INTO vehicles ("name", "image", "user_id") VALUES ($1, $2, $3) RETURNING "id";`;
   const queryValues = [req.body.name, req.body.image, req.body.user_id];
-  pool
-    .query(queryText, queryValues)
-    .then(() => {
-      res.sendStatus(201);
-    })
-    .catch((err) => {
-      console.log('Error completing INSERT vehicle query', err);
-      res.sendStatus(500);
-    });
+  pool.query(queryText, queryValues).then((result) => {
+    const createdVehicleId = result.rows[0].id;
+    const insertVehicleOilQuery = `
+      INSERT INTO oil ("active", "date", "miles_drove", "miles_allowed", "miles_left", "vehicle_id")
+      VALUES ($1, $2, $3, $4, $5, $6);`;
+    const vehicleOilQueryValues = [
+      req.body.active,
+      req.body.oil_date,
+      req.body.oil_miles_drove,
+      req.body.oil_miles_allowed,
+      req.body.oil_miles_left,
+      createdVehicleId,
+    ];
+    pool
+      .query(insertVehicleOilQuery, vehicleOilQueryValues)
+      .then((result) => {
+        const insertVehicleTiresQuery = `
+          INSERT INTO tires ("active", "date", "miles_drove", "miles_allowed", "miles_left", "vehicle_id")
+          VALUES ($1, $2, $3, $4, $5, $6);`;
+        const vehicleTiresQueryValues = [
+          req.body.active,
+          req.body.tires_date,
+          req.body.tires_miles_drove,
+          req.body.tires_miles_allowed,
+          req.body.tires_miles_left,
+          createdVehicleId,
+        ];
+        pool
+          .query(insertVehicleTiresQuery, vehicleTiresQueryValues)
+          .then((result) => {
+            res.sendStatus(201);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.sendStatus(500);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(500);
+      });
+  });
 });
 
 module.exports = router;

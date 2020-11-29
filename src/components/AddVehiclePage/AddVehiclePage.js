@@ -20,16 +20,14 @@ class AddVehiclePage extends Component {
       name: '',
       image: '',
       user_id: this.props.store.user.id,
-    },
-    newOil: {
-      date: new Date(),
-      miles_drove: '',
-      miles_allowed: '',
-    },
-    newTires: {
-      date: new Date(),
-      miles_drove: '',
-      miles_allowed: '',
+      oil_date: new Date(),
+      oil_miles_drove: '',
+      oil_miles_allowed: '',
+      oil_vehicle_id: '',
+      tires_date: new Date(),
+      tires_miles_drove: '',
+      tires_miles_allowed: '',
+      tires_vehicle_id: '',
     },
   };
 
@@ -42,36 +40,18 @@ class AddVehiclePage extends Component {
     });
   };
 
-  handleOilInputChange = (input) => (event) => {
-    this.setState({
-      newOil: {
-        ...this.state.newOil,
-        [input]: event.target.value,
-      },
-    });
-  };
-
   handleOilDateChange = (event, date) => {
     this.setState({
-      newOil: {
-        date: date,
-      },
-    });
-  };
-
-  handleTiresInputChange = (input) => (event) => {
-    this.setState({
-      newTires: {
-        ...this.state.newTires,
-        [input]: event.target.value,
+      newVehicle: {
+        oil_date: date,
       },
     });
   };
 
   handleTiresDateChange = (event, date) => {
     this.setState({
-      newTires: {
-        date: date,
+      newVehicle: {
+        tires_date: date,
       },
     });
   };
@@ -81,14 +61,6 @@ class AddVehiclePage extends Component {
       type: 'POST_VEHICLES',
       payload: this.state.newVehicle,
     });
-    // this.props.dispatch({
-    //   type: 'POST_OIL',
-    //   payload: this.state.newOil,
-    // });
-    // this.props.dispatch({
-    //   type: 'POST_TIRES',
-    //   payload: this.state.newTires,
-    // });
     this.props.history.push('/garage');
   };
 
@@ -121,7 +93,7 @@ class AddVehiclePage extends Component {
               format="MM/dd/yyyy"
               id="date-picker-oil"
               label="Date of Change"
-              value={this.state.newOil.date}
+              value={this.state.newVehicle.oil_date}
               onChange={this.handleOilDateChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
@@ -132,12 +104,12 @@ class AddVehiclePage extends Component {
           <TextField
             margin="normal"
             helperText="Miles driven since last change"
-            onChange={this.handleOilInputChange('miles_drove')}
+            onChange={this.handleVehicleInputChange('oil_miles_drove')}
           />
           <TextField
             margin="normal"
             helperText="Miles allowed before change"
-            onChange={this.handleOilInputChange('miles_allowed')}
+            onChange={this.handleVehicleInputChange('oil_miles_allowed')}
           />
         </div>
         <div>
@@ -153,7 +125,7 @@ class AddVehiclePage extends Component {
               format="MM/dd/yyyy"
               id="date-picker-tires"
               label="Date of Change"
-              value={this.state.newTires.date}
+              value={this.state.newVehicle.tires_date}
               onChange={this.handleTiresDateChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
@@ -164,12 +136,12 @@ class AddVehiclePage extends Component {
           <TextField
             margin="normal"
             helperText="Miles driven since last change"
-            onChange={this.handleTiresInputChange('miles_drove')}
+            onChange={this.handleVehicleInputChange('tires_miles_drove')}
           />
           <TextField
             margin="normal"
             helperText="Miles allowed before change"
-            onChange={this.handleTiresInputChange('miles_allowed')}
+            onChange={this.handleVehicleInputChange('tires_miles_allowed')}
           />
         </div>
         <button onClick={this.addToGarageClick}>Add to Garage</button>
