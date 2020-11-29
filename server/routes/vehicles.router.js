@@ -6,7 +6,10 @@ const {
 } = require('../modules/authentication-middleware');
 
 router.get('/', rejectUnauthenticated, (req, res) => {
-  const queryText = 'SELECT * FROM vehicles WHERE "user_id" = $1;';
+  const queryText = `SELECT vehicles.id, vehicles.name, vehicles.image, oil.miles_left as oil_left, tires.miles_left as tires_left FROM vehicles
+  JOIN "oil" ON vehicles.id = oil.vehicle_id
+  JOIN "tires" ON vehicles.id = tires.vehicle_id
+  WHERE "user_id" = $1 AND oil.active = true AND tires.active = true;`;
   pool
     .query(queryText, [req.user.id])
     .then((result) => {

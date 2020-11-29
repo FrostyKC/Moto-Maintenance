@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
 import VehicleListItem from '../VehicleListItem/VehicleListItem';
+import { Grid } from '@material-ui/core';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -20,11 +21,17 @@ class VehicleList extends Component {
 
   render() {
     return (
-      <div>
+      <Grid
+        container
+        spacing={2}
+        align="center"
+        justify="center"
+        alignItems="center"
+      >
         {this.props.store.vehicles.map((vehicleItem, index) => {
           return <VehicleListItem key={index} vehicleItem={vehicleItem} />;
         })}
-      </div>
+      </Grid>
     );
   }
 }

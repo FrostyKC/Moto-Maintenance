@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
-
+import { Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
 import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router-dom';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+
+const styling = (theme) =>
+  createStyles({
+    imgMedia: {
+      height: '330px',
+      backgroundSize: 'cover',
+    },
+  });
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -23,27 +34,30 @@ class VehicleListItem extends Component {
 
   render() {
     return (
-      <div>
+      <Grid item md={4}>
         <Card onClick={this.vehicleCardClick}>
           <CardActionArea>
-            {/* <CardMedia
-              // onClick={this.movieClick}
+            <CardMedia
+              className={this.props.classes.imgMedia}
               image={this.props.vehicleItem.image}
-              title={this.props.movieItem.title}
-            /> */}
+              title={this.props.vehicleItem.name}
+            />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {this.props.vehicleItem.name}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                oil:idk Tires:idk
+                oil:{this.props.vehicleItem.oil_left} Tires:
+                {this.props.vehicleItem.tires_left}
               </Typography>
             </CardContent>
           </CardActionArea>
         </Card>
-      </div>
+      </Grid>
     );
   }
 }
 
-export default withRouter(connect(mapStoreToProps)(VehicleListItem));
+export default withRouter(
+  withStyles(styling)(connect(mapStoreToProps)(VehicleListItem))
+);
