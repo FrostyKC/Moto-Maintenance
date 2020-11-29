@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
 import VehicleList from '../VehicleList/VehicleList';
+import './MyGaragePage.css';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -18,10 +19,14 @@ class MyGaragePage extends Component {
 
   render() {
     return (
-      <div>
-        <h2>{this.state.heading}</h2>
-        <button onClick={this.addVehicleClick}>Add a Vehicle</button>
-        <VehicleList />
+      <div className="container">
+        <h1 style={{ textAlign: 'center' }}>{this.state.heading}</h1>
+        <div className="addbtn">
+          <button onClick={this.addVehicleClick}>Add a Vehicle</button>
+        </div>
+        <div>
+          <VehicleList />
+        </div>
       </div>
     );
   }
