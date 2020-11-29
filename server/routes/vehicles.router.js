@@ -82,11 +82,11 @@ router.post('/', (req, res) => {
       INSERT INTO oil ("active", "date", "miles_drove", "miles_allowed", "miles_left", "vehicle_id")
       VALUES ($1, $2, $3, $4, $5, $6);`;
       const vehicleOilQueryValues = [
-        req.body.active,
+        true,
         req.body.oil_date,
         req.body.oil_miles_drove,
         req.body.oil_miles_allowed,
-        req.body.oil_miles_left,
+        req.body.oil_miles_allowed - req.body.oil_miles_drove,
         createdVehicleId,
       ];
       pool
@@ -96,11 +96,11 @@ router.post('/', (req, res) => {
           INSERT INTO tires ("active", "date", "miles_drove", "miles_allowed", "miles_left", "vehicle_id")
           VALUES ($1, $2, $3, $4, $5, $6);`;
           const vehicleTiresQueryValues = [
-            req.body.active,
+            true,
             req.body.tires_date,
             req.body.tires_miles_drove,
             req.body.tires_miles_allowed,
-            req.body.tires_miles_left,
+            req.body.tires_miles_allowed - req.body.tires_miles_drove,
             createdVehicleId,
           ];
           pool
