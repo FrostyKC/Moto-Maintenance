@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'react-router-dom';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -17,7 +18,7 @@ class VehicleListItem extends Component {
   };
 
   vehicleCardClick = (event) => {
-    this.props.history.push();
+    this.props.history.push(`/vehicle/details/${this.props.vehicleItem.id}`);
   };
 
   render() {
@@ -45,4 +46,4 @@ class VehicleListItem extends Component {
   }
 }
 
-export default connect(mapStoreToProps)(VehicleListItem);
+export default withRouter(connect(mapStoreToProps)(VehicleListItem));

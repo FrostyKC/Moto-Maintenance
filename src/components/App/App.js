@@ -23,6 +23,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import './App.css';
 import MyGaragePage from '../MyGaragePage/MyGaragePage';
 import AddVehiclePage from '../AddVehiclePage/AddVehiclePage';
+import VehicleDetailsPage from '../VehicleDetailsPage/VehicleDetailsPage';
 
 class App extends Component {
   componentDidMount() {
@@ -100,6 +101,11 @@ class App extends Component {
               exact
               path="/addvehicle"
               component={AddVehiclePage}
+            />
+            <ProtectedRoute
+              exact
+              path="/vehicle/details/:id"
+              component={VehicleDetailsPage}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}
