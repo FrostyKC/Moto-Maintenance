@@ -43,6 +43,7 @@ class AddVehiclePage extends Component {
   handleOilDateChange = (event, date) => {
     this.setState({
       newVehicle: {
+        ...this.state.newVehicle,
         oil_date: date,
       },
     });
@@ -51,6 +52,7 @@ class AddVehiclePage extends Component {
   handleTiresDateChange = (event, date) => {
     this.setState({
       newVehicle: {
+        ...this.state.newVehicle,
         tires_date: date,
       },
     });
