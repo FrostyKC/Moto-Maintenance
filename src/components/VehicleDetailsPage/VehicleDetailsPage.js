@@ -34,7 +34,13 @@ class VehicleDetailsPage extends Component {
 
   vehicleDetailsEditClick = (event) => {
     this.props.history.push(
-      `/vehicle/details/${this.props.match.params.id}/edit`
+      `/vehicle/details/${this.props.store.vehicleDetails.id}/edit`
+    );
+  };
+
+  vehicleDetailsViewClick = (event) => {
+    this.props.history.push(
+      `/vehicle/maintenance/${this.props.store.vehicleDetails.id}`
     );
   };
 
@@ -96,7 +102,7 @@ class VehicleDetailsPage extends Component {
                     );
                   }
                 })}
-              <button>View</button>
+              <button onClick={this.vehicleDetailsViewClick}>View</button>
             </Grid>
           </Grid>
         </Grid>
