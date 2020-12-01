@@ -54,10 +54,28 @@ function* postVehicles(action) {
   }
 }
 
+function* putVehicleDetails(action) {
+  try {
+    yield axios.put('/api/vehicles', action.payload);
+    console.log(action.payload.id);
+    yield put({
+      type: 'GET_VEHICLE_DETAILS',
+      payload: action.payload.id,
+    });
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: 'ERROR_MSG',
+      payload: "Sorry we couldn't update your vehicle. Please try again.",
+    });
+  }
+}
+
 function* vehicleSaga() {
   yield takeLatest('GET_VEHICLES', getVehicles);
   yield takeLatest('GET_VEHICLE_DETAILS', getVehicleDetails);
   yield takeLatest('POST_VEHICLES', postVehicles);
+  yield takeLatest('PUT_VEHICLE', putVehicleDetails);
 }
 
 export default vehicleSaga;

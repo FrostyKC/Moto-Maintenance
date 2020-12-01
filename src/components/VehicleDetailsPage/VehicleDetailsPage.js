@@ -11,7 +11,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 const styling = (theme) =>
   createStyles({
     imgMedia: {
-      height: '330px',
+      height: '250px',
       backgroundSize: 'cover',
     },
     paper: {
@@ -32,6 +32,12 @@ class VehicleDetailsPage extends Component {
     console.log(this.props.store.vehicleDetails.oil);
   }
 
+  vehicleDetailsEditClick = (event) => {
+    this.props.history.push(
+      `/vehicle/details/${this.props.match.params.id}/edit`
+    );
+  };
+
   render() {
     return (
       <Grid container spacing={1} className={this.props.classes.paper}>
@@ -48,7 +54,7 @@ class VehicleDetailsPage extends Component {
               src={this.props.store.vehicleDetails.image}
             />
             <div>
-              <button>Edit</button>
+              <button onClick={this.vehicleDetailsEditClick}>Edit</button>
             </div>
           </Grid>
 

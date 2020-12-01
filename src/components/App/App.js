@@ -24,6 +24,7 @@ import './App.css';
 import MyGaragePage from '../MyGaragePage/MyGaragePage';
 import AddVehiclePage from '../AddVehiclePage/AddVehiclePage';
 import VehicleDetailsPage from '../VehicleDetailsPage/VehicleDetailsPage';
+import VehicleDetailsEditPage from '../VehicleDetailsEditPage/VehicleDetailsEditPage';
 
 class App extends Component {
   componentDidMount() {
@@ -106,6 +107,11 @@ class App extends Component {
               exact
               path="/vehicle/details/:id"
               component={VehicleDetailsPage}
+            />
+            <ProtectedRoute
+              exact
+              path="/vehicle/details/:id/edit"
+              component={VehicleDetailsEditPage}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}

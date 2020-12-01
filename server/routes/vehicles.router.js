@@ -126,4 +126,22 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/', (req, res) => {
+  const queryText = `UPDATE vehicles
+  SET "name" = $1,
+  "image" = $2
+  WHERE id=$3;`;
+
+  const queryValues = [req.body.name, req.body.image, req.body.id];
+
+  pool
+    .query(queryText, queryValues)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
