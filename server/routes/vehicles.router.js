@@ -23,19 +23,19 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.get('/details/:id', (req, res) => {
+router.get('/details/:id', rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "vehicles"
-  WHERE vehicles.id = $1;`;
+  WHERE vehicles.id = $1 AND user_id = $2;`;
   const vehicleId = req.params.id;
   pool
-    .query(queryText, [vehicleId])
+    .query(queryText, [vehicleId, req.user.id])
     .then((result) => {
       const vehicleDetails = result.rows[0];
       // console.log('1', result.rows);
       // console.log('1', result.rows[0]);
 
       const oilQueryText = `SELECT * FROM "oil"
-      WHERE oil.vehicle_id = $1;`;
+      WHERE oil.vehicle_id = $1 AND oil.active = true;`;
 
       pool
         .query(oilQueryText, [vehicleId])
@@ -44,7 +44,7 @@ router.get('/details/:id', (req, res) => {
           // console.log('2', result.rows);
 
           const tiresQueryText = `SELECT * FROM "tires"
-          WHERE tires.vehicle_id = $1;`;
+          WHERE tires.vehicle_id = $1 AND tires.active = true;`;
 
           pool
             .query(tiresQueryText, [vehicleId])

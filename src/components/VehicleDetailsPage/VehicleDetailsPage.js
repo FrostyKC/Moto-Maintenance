@@ -11,7 +11,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 const styling = (theme) =>
   createStyles({
     imgMedia: {
-      height: '250px',
+      width: '100%',
       backgroundSize: 'cover',
     },
     paper: {
@@ -47,13 +47,11 @@ class VehicleDetailsPage extends Component {
   render() {
     return (
       <Grid container spacing={1} className={this.props.classes.paper}>
-        <Grid className={this.props.classes.paper} container item xs={12}>
-          <Grid item xs={12}>
-            <h2>{this.props.store.vehicleDetails.name} Details</h2>
-          </Grid>
+        <Grid className={this.props.classes.paper} item xs={12}>
+          <h2>{this.props.store.vehicleDetails.name} Details</h2>
         </Grid>
         <Grid container item xs={12} alignItems="flex-start">
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <img
               className={this.props.classes.imgMedia}
               alt={this.props.store.vehicleDetails.name}
@@ -64,9 +62,17 @@ class VehicleDetailsPage extends Component {
             </div>
           </Grid>
 
-          <Grid item xs={9} className={this.props.classes.paper}>
-            <h2>Maintenance</h2>
-            <Grid item xs={9} direction="row">
+          <Grid
+            container
+            item
+            xs={8}
+            className={this.props.classes.paper}
+            alignItems="flex-end"
+          >
+            <Grid item xs={12}>
+              <h2>Maintenance</h2>
+            </Grid>
+            <Grid item xs={4}>
               <h4>Oil Status</h4>
               {this.props.store.vehicleDetails.oil &&
                 this.props.store.vehicleDetails.oil.map((oilItem, index) => {
@@ -84,6 +90,11 @@ class VehicleDetailsPage extends Component {
                     );
                   }
                 })}
+            </Grid>
+            <Grid item xs={4}>
+              <button onClick={this.vehicleDetailsViewClick}>View</button>
+            </Grid>
+            <Grid item xs={4}>
               <h4>Tire Status</h4>
               {this.props.store.vehicleDetails.tires &&
                 this.props.store.vehicleDetails.tires.map((tireItem, index) => {
@@ -102,7 +113,6 @@ class VehicleDetailsPage extends Component {
                     );
                   }
                 })}
-              <button onClick={this.vehicleDetailsViewClick}>View</button>
             </Grid>
           </Grid>
         </Grid>
