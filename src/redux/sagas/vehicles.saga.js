@@ -71,11 +71,27 @@ function* putVehicleDetails(action) {
   }
 }
 
+function* deleteVehicle(action) {
+  try {
+    yield axios.delete(`/api/vehicles/${action.payload}`);
+    yield put({
+      type: 'GET_VEHICLES',
+    });
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: 'ERROR_MSG',
+      payload: "Sorry we couldn't delete your vehicle. Please try again.",
+    });
+  }
+}
+
 function* vehicleSaga() {
   yield takeLatest('GET_VEHICLES', getVehicles);
   yield takeLatest('GET_VEHICLE_DETAILS', getVehicleDetails);
   yield takeLatest('POST_VEHICLES', postVehicles);
   yield takeLatest('PUT_VEHICLE', putVehicleDetails);
+  yield takeLatest('DELETE_VEHICLE', deleteVehicle);
 }
 
 export default vehicleSaga;

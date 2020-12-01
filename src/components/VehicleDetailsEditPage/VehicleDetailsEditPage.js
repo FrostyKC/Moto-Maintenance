@@ -55,7 +55,22 @@ class VehicleDetailsEditPage extends Component {
       type: 'PUT_VEHICLE',
       payload: this.state.editVehicle,
     });
-    this.props.history.push(`/vehicle/details/${this.state.editVehicle.id}`);
+    this.props.history.push(
+      `/vehicle/details/${this.props.store.vehicleDetails.id}`
+    );
+  };
+
+  deleteVehicle = (event) => {
+    let answer = window.confirm(
+      `Are you sure you want to DELETE ${this.props.store.vehicleDetails.name}? This will DELETE all MAINTENANCE and TRIP history.`
+    );
+    if (answer) {
+      this.props.dispatch({
+        type: 'DELETE_VEHICLE',
+        payload: this.props.store.vehicleDetails.id,
+      });
+      this.props.history.push('/garage');
+    }
   };
 
   render() {
@@ -63,7 +78,7 @@ class VehicleDetailsEditPage extends Component {
       <div style={{ textAlign: 'center' }}>
         <div>
           <h2>Edit {this.props.store.vehicleDetails.name}</h2>
-          <pre>{JSON.stringify(this.state.editVehicle)}</pre>
+          {/* <pre>{JSON.stringify(this.state.editVehicle)}</pre> */}
         </div>
         <div>
           <TextField
@@ -93,6 +108,13 @@ class VehicleDetailsEditPage extends Component {
             onClick={this.saveVehicleDetails}
           >
             Save
+          </Button>
+          <Button
+            variant="contained"
+            style={{ margin: '10px' }}
+            onClick={this.deleteVehicle}
+          >
+            Delete {this.props.store.vehicleDetails.name}
           </Button>
         </div>
       </div>

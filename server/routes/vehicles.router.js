@@ -144,4 +144,40 @@ router.put('/', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+  const oilQueryText = 'DELETE FROM oil WHERE vehicle_id=$1';
+  pool
+    .query(oilQueryText, [req.params.id])
+    .then(() => {
+      const tiresQueryText = 'DELETE FROM tires WHERE vehicle_id=$1';
+      pool
+        .query(tiresQueryText, [req.params.id])
+        .then(() => {
+          const tripsQueryText = 'DELETE FROM trips WHERE vehicle_id=$1';
+          pool
+            .query(tripsQueryText, [req.params.id])
+            .then(() => {
+              const vehicleQueryText = 'DELETE FROM vehicles WHERE id=$1';
+              pool
+                .query(vehicleQueryText, [req.params.id])
+                .then(() => {
+                  res.sendStatus(200);
+                })
+                .catch((err) => {
+                  res.sendStatus(500);
+                });
+            })
+            .catch((err) => {
+              res.sendStatus(500);
+            });
+        })
+        .catch((err) => {
+          res.sendStatus(500);
+        });
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
