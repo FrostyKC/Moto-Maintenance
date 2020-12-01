@@ -14,6 +14,12 @@ const styling = (theme) =>
       height: '330px',
       backgroundSize: 'cover',
     },
+    paper: {
+      textAlign: 'center',
+    },
+    maintenance: {
+      display: 'inline',
+    },
   });
 
 class VehicleDetailsPage extends Component {
@@ -28,54 +34,68 @@ class VehicleDetailsPage extends Component {
 
   render() {
     return (
-      <Grid>
-        <h2>{this.props.store.vehicleDetails.name}</h2>
-        <Grid item>
-          <img
-            className={this.props.classes.imgMedia}
-            alt={this.props.store.vehicleDetails.name}
-            src={this.props.store.vehicleDetails.image}
-          />
-          <button>Edit</button>
+      <Grid container spacing={1} className={this.props.classes.paper}>
+        <Grid className={this.props.classes.paper} container item xs={12}>
+          <Grid item xs={12}>
+            <h2>{this.props.store.vehicleDetails.name} Details</h2>
+          </Grid>
         </Grid>
-        <Grid>
-          <h2>Maintenance</h2>
-          <h4>Oil Status</h4>
-          {this.props.store.vehicleDetails.oil &&
-            this.props.store.vehicleDetails.oil.map((oilItem, index) => {
-              if (oilItem.miles_left > oilItem.miles_allowed * 0.2) {
-                return (
-                  <p key={index} style={{ color: 'green' }}>
-                    {oilItem.miles_left} miles left
-                  </p>
-                );
-              } else {
-                return (
-                  <p key={index} style={{ color: 'red' }}>
-                    {oilItem.miles_left} miles left
-                  </p>
-                );
-              }
-            })}
-          <h4>Tire Status</h4>
-          {this.props.store.vehicleDetails.tires &&
-            this.props.store.vehicleDetails.tires.map((tireItem, index) => {
-              console.log(tireItem);
-              if (tireItem.miles_left > tireItem.miles_allowed * 0.2) {
-                return (
-                  <p key={index} style={{ color: 'green' }}>
-                    {tireItem.miles_left} miles left
-                  </p>
-                );
-              } else {
-                return (
-                  <p key={index} style={{ color: 'red' }}>
-                    {tireItem.miles_left} miles left
-                  </p>
-                );
-              }
-            })}
-          <button>View</button>
+        <Grid container item xs={12} alignItems="flex-start">
+          <Grid item xs={3}>
+            <img
+              className={this.props.classes.imgMedia}
+              alt={this.props.store.vehicleDetails.name}
+              src={this.props.store.vehicleDetails.image}
+            />
+            <div>
+              <button>Edit</button>
+            </div>
+          </Grid>
+
+          <Grid item xs={9} className={this.props.classes.paper}>
+            <h2>Maintenance</h2>
+            <Grid item xs={9} direction="row">
+              <h4>Oil Status</h4>
+              {this.props.store.vehicleDetails.oil &&
+                this.props.store.vehicleDetails.oil.map((oilItem, index) => {
+                  if (oilItem.miles_left > oilItem.miles_allowed * 0.2) {
+                    return (
+                      <p key={index} style={{ color: 'green' }}>
+                        {oilItem.miles_left} miles left
+                      </p>
+                    );
+                  } else {
+                    return (
+                      <p key={index} style={{ color: 'red' }}>
+                        {oilItem.miles_left} miles left
+                      </p>
+                    );
+                  }
+                })}
+              <h4>Tire Status</h4>
+              {this.props.store.vehicleDetails.tires &&
+                this.props.store.vehicleDetails.tires.map((tireItem, index) => {
+                  console.log(tireItem);
+                  if (tireItem.miles_left > tireItem.miles_allowed * 0.2) {
+                    return (
+                      <p key={index} style={{ color: 'green' }}>
+                        {tireItem.miles_left} miles left
+                      </p>
+                    );
+                  } else {
+                    return (
+                      <p key={index} style={{ color: 'red' }}>
+                        {tireItem.miles_left} miles left
+                      </p>
+                    );
+                  }
+                })}
+              <button>View</button>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12} className={this.props.classes.paper}>
           <h2>Trips</h2>
           <button>Add a Trip</button>
         </Grid>
