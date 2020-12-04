@@ -44,6 +44,12 @@ class VehicleDetailsPage extends Component {
     );
   };
 
+  vehicleDetailsAddTripClick = (event) => {
+    this.props.history.push(
+      `/vehicle/${this.props.store.vehicleDetails.id}/addtrip`
+    );
+  };
+
   render() {
     return (
       <Grid container spacing={1} className={this.props.classes.paper}>
@@ -119,7 +125,8 @@ class VehicleDetailsPage extends Component {
 
         <Grid item xs={12} className={this.props.classes.paper}>
           <h2>Trips</h2>
-          <button>Add a Trip</button>
+          <button onClick={this.vehicleDetailsAddTripClick}>Add a Trip</button>
+          {/* ADD TRIP LIST */}
         </Grid>
       </Grid>
     );
