@@ -32,6 +32,17 @@ class VehicleMaintenancePage extends Component {
     console.log(this.props.store.vehicleDetails.oil);
   }
 
+  changeOilClick = (event) => {
+    this.props.history.push(
+      `/vehicle/maintenance/${this.props.store.vehicleDetails.id}/changeOil`
+    );
+  };
+  changeTiresClick = (event) => {
+    this.props.history.push(
+      `/vehicle/maintenance/${this.props.store.vehicleDetails.id}/changeTires`
+    );
+  };
+
   render() {
     return (
       <div>
@@ -62,7 +73,7 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{oilItem.miles_allowed}</strong>
                     </p>
-                    <button>Change Oil</button>
+                    <button onClick={this.changeOilClick}>Change Oil</button>
                   </div>
                 );
               } else {
@@ -80,7 +91,7 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{oilItem.miles_allowed}</strong>
                     </p>
-                    <button>Change Oil</button>
+                    <button onClick={this.changeOilClick}>Change Oil</button>
                   </div>
                 );
               }
@@ -112,7 +123,9 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{tireItem.miles_allowed}</strong>
                     </p>
-                    <button>Change Tires</button>
+                    <button onClick={this.changeTiresClick}>
+                      Change Tires
+                    </button>
                   </div>
                 );
               } else {
@@ -130,7 +143,9 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{tireItem.miles_allowed}</strong>
                     </p>
-                    <button>Change Tires</button>
+                    <button onClick={this.changeTiresClick}>
+                      Change Tires
+                    </button>
                   </div>
                 );
               }

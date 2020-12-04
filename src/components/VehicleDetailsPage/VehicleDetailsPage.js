@@ -3,6 +3,15 @@ import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
 import Grid from '@material-ui/core/Grid';
 import { withStyles, createStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+const { DateTime } = require('luxon');
+
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
@@ -28,8 +37,13 @@ class VehicleDetailsPage extends Component {
       type: 'GET_VEHICLE_DETAILS',
       payload: this.props.match.params.id,
     });
+    this.props.dispatch({
+      type: 'GET_TRIPS',
+      payload: this.props.match.params.id,
+    });
     console.log(this.props.store.vehicleDetails);
     console.log(this.props.store.vehicleDetails.oil);
+    console.log(this.props.store.trips);
   }
 
   vehicleDetailsEditClick = (event) => {
@@ -126,7 +140,50 @@ class VehicleDetailsPage extends Component {
         <Grid item xs={12} className={this.props.classes.paper}>
           <h2>Trips</h2>
           <button onClick={this.vehicleDetailsAddTripClick}>Add a Trip</button>
-          {/* ADD TRIP LIST */}
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Starting Location</TableCell>
+                  <TableCell>Ending Location</TableCell>
+                  <TableCell>Total distance</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.props.store.trips.map((tripItem, index) => {
+                  const tripDate = DateTime.fromISO(tripItem.date);
+                  const humanTripDate = tripDate.toLocaleString(
+                    DateTime.DATE_SHORT
+                  );
+
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{humanTripDate}</TableCell>
+                      <TableCell>{tripItem.name}</TableCell>
+                      <TableCell>{tripItem.start_point}</TableCell>
+                      <TableCell>{tripItem.end_point}</TableCell>
+                      <TableCell>{tripItem.total} miles</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {/* {this.props.store.trips.map((tripItem, index) => {
+            const tripDate = DateTime.fromISO(tripItem.date);
+            const humanTripDate = tripDate.toLocaleString(DateTime.DATE_SHORT);
+            return (
+              <p key={index}>
+                {humanTripDate} {}
+                {tripItem.name} {}
+                {tripItem.start_point} {}
+                {tripItem.end_point} {}
+                {tripItem.total} miles
+              </p>
+            );
+          })} */}
         </Grid>
       </Grid>
     );

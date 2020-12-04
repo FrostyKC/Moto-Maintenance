@@ -27,6 +27,8 @@ import VehicleDetailsPage from '../VehicleDetailsPage/VehicleDetailsPage';
 import VehicleDetailsEditPage from '../VehicleDetailsEditPage/VehicleDetailsEditPage';
 import VehicleMaintenancePage from '../VehicleMaintenancePage/VehicleMaintenancePage';
 import AddTripPage from '../AddTripPage/AddTripPage';
+import ChangeOilPage from '../ChangeOilPage/ChangeOilPage';
+import ChangeTiresPage from '../ChangeTiresPage/ChangeTiresPage';
 
 class App extends Component {
   componentDidMount() {
@@ -40,7 +42,7 @@ class App extends Component {
           <Nav />
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-            <Redirect exact from="/" to="/home" />
+            <Redirect exact from="/" to="/garage" />
 
             {/* Visiting localhost:3000/about will show the about page. */}
             <Route
@@ -124,6 +126,16 @@ class App extends Component {
               exact
               path="/vehicle/:id/addtrip"
               component={AddTripPage}
+            />
+            <ProtectedRoute
+              exact
+              path="/vehicle/maintenance/:id/changeOil"
+              component={ChangeOilPage}
+            />
+            <ProtectedRoute
+              exact
+              path="/vehicle/maintenance/:id/changeTires"
+              component={ChangeTiresPage}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}

@@ -27,15 +27,21 @@ class AddTripPage extends Component {
       date: new Date(),
       roundtrip: '',
       total: '',
+      vehicle_id: this.props.store.vehicleDetails.id,
     },
   };
 
   componentDidMount() {
+    console.log(this.props);
     if ('geolocation' in navigator) {
       console.log('it will work');
     } else {
       console.log('geolocation is not available on this browser');
     }
+    this.props.dispatch({
+      type: 'GET_VEHICLE_DETAILS',
+      payload: this.props.match.params.id,
+    });
   }
 
   handleTripInputChange = (input) => (event) => {
@@ -129,48 +135,92 @@ class AddTripPage extends Component {
         if (status !== 'OK') {
           alert(`Error was: ${status}`);
         } else {
-          let originList = response.originAddresses;
-          let destinationList = response.destinationAddresses;
-
-          for (let i = 0; i < originList.length; i++) {
-            let results = response.rows[i].elements;
-            for (let j = 0; j < results.length; j++) {
-              let element = results[j];
-              let distance = parseInt(element.distance.text);
-              let from = originList[i];
-              let to = destinationList[j];
-              console.log(
-                `Starting Location: ${from} Ending Location: ${to} Distance: ${distance} miles`
-              );
-              if (this.state.addTrip.roundtrip) {
-                distance *= 2;
-                console.log(distance);
-              }
-              this.setState({
-                addTrip: {
-                  ...this.state.addTrip,
-                  total: distance,
-                },
-              });
-            }
+          let originList = response.originAddresses[0];
+          let destinationList = response.destinationAddresses[0];
+          let distance = response.rows[0].elements[0].distance;
+          // let distance_value = distance.value;
+          let distance_text = distance.text;
+          let miles = parseInt(
+            distance_text.substring(0, distance_text.length - 3)
+          );
+          console.log(miles);
+          console.log(this.state.addTrip.roundtrip);
+          if (this.state.addTrip.roundtrip) {
+            console.log(miles);
+            miles *= 2;
+            console.log('before', miles);
           }
+          this.setState({
+            addTrip: {
+              ...this.state.addTrip,
+              start_point: originList,
+              end_point: destinationList,
+              total: miles,
+            },
+          });
+          this.props.dispatch({
+            type: 'POST_TRIPS',
+            payload: { ...this.state.addTrip, id: this.props.match.params.id },
+          });
+          // this.props.dispatch({
+          //   type: 'UPDATE_TRIP_MAINTENANCE',
+          //   payload: this.state.addTrip,
+          // });
+          this.props.history.push(
+            `/vehicle/details/${this.props.store.vehicleDetails.id}`
+          );
+
+          // for (let i = 0; i < originList.length; i++) {
+          //   let results = response.rows[i].elements;
+          //   for (let j = 0; j < results.length; j++) {
+          //     let element = results[j];
+          //     let distance = parseInt(element.distance.text);
+          //     let from = originList[i];
+          //     let to = destinationList[j];
+          //     console.log(
+          //       `Starting Location: ${from} Ending Location: ${to} Distance: ${distance} miles`
+          //     );
+          //     if (this.state.addTrip.roundtrip) {
+          //       distance *= 2;
+          //       console.log(distance);
+          //     }
+          //     console.log(this);
+          // this.setState({
+          //   addTrip: {
+          //     ...this.state.addTrip,
+          //     start_point: from,
+          //     end_point: to,
+          //     total: distance,
+          //   },
+          // });
+          //   }
+          // }
         }
+        console.log(this.state);
+        // this.props.dispatch({
+        //   type: 'POST_TRIPS',
+        //   payload: this.state.addTrip,
+        // });
+        // this.props.history.push(
+        //   `/vehicle/details/${this.props.store.vehicleDetails.id}`
+        // );
       }
     );
-    // send data to db and sub miles from tires and oil
-  };
 
+    console.log(this.state);
+  };
+  // send data to db and sub miles from tires and oil
   render() {
     return (
       <div>
         <div>
           <h2>{this.state.heading}</h2>
-          <pre>
+          {/* <pre>
             {JSON.stringify(
               `${this.state.startDisabled} ${this.state.endDisabled}`
             )}
           </pre>
-          <pre>{JSON.stringify(this.state.addTrip)}</pre>
+          <pre>{JSON.stringify(this.state.addTrip)}</pre> */}
         </div>
         <TextField
           label="Trip Name"
@@ -183,7 +233,7 @@ class AddTripPage extends Component {
           variant="outlined"
           value={this.state.addTrip.start_point}
           onChange={this.handleTripInputChange('start_point')}
-          disabled={this.state.startDisabled ? 'disabled' : ''}
+          disabled={this.state.startDisabled ? true : false}
         />
         <Button
           variant="contained"
@@ -198,7 +248,7 @@ class AddTripPage extends Component {
           variant="outlined"
           value={this.state.addTrip.end_point}
           onChange={this.handleTripInputChange('end_point')}
-          disabled={this.state.endDisabled ? 'disabled' : ''}
+          disabled={this.state.endDisabled ? true : false}
         />
         <Button
           variant="contained"
