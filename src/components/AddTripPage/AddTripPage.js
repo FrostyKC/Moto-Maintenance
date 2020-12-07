@@ -10,14 +10,24 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import Button from '@material-ui/core/Button';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
 // component.
+
+const styling = (theme) =>
+  createStyles({
+    tripInput: {
+      margin: '10px',
+      verticalAlign: 'baseline',
+    },
+  });
+
 class AddTripPage extends Component {
   state = {
-    heading: 'Add Trip Page',
+    heading: 'Add a Trip',
     startDisabled: false,
     endDisabled: false,
     addTrip: {
@@ -105,6 +115,12 @@ class AddTripPage extends Component {
 
   error = (err) => {
     console.log(err);
+  };
+
+  cancelTrip = (event) => {
+    this.props.history.push(
+      `/vehicle/details/${this.props.store.vehicleDetails.id}`
+    );
   };
 
   submitTrip = (event) => {
@@ -212,7 +228,7 @@ class AddTripPage extends Component {
   // send data to db and sub miles from tires and oil
   render() {
     return (
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
           {/* <pre>
@@ -222,63 +238,88 @@ class AddTripPage extends Component {
           </pre>
           <pre>{JSON.stringify(this.state.addTrip)}</pre> */}
         </div>
-        <TextField
-          label="Trip Name"
-          variant="outlined"
-          value={this.state.addTrip.name}
-          onChange={this.handleTripInputChange('name')}
-        />
-        <TextField
-          label="Starting Location"
-          variant="outlined"
-          value={this.state.addTrip.start_point}
-          onChange={this.handleTripInputChange('start_point')}
-          disabled={this.state.startDisabled ? true : false}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.getStartingLocation}
-        >
-          Get current Location
-        </Button>
-
-        <TextField
-          label="Ending Location"
-          variant="outlined"
-          value={this.state.addTrip.end_point}
-          onChange={this.handleTripInputChange('end_point')}
-          disabled={this.state.endDisabled ? true : false}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.getEndingLocation}
-        >
-          Get current Location
-        </Button>
-
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            autoOk
-            variant="inline"
-            format="MM/dd/yyyy"
-            label="Date of trip:"
-            value={this.state.addTrip.date}
-            onChange={this.handleTripDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
+        <div>
+          <TextField
+            className={this.props.classes.tripInput}
+            label="Trip Name"
+            variant="outlined"
+            value={this.state.addTrip.name}
+            onChange={this.handleTripInputChange('name')}
           />
-        </MuiPickersUtilsProvider>
-
-        <FormControlLabel
-          control={<Checkbox name="roundTrip" />}
-          label="Roundtrip?"
-          onChange={this.handleTripInputChange('roundtrip')}
-        />
-        <Button variant="contained" color="primary" onClick={this.submitTrip}>
+        </div>
+        <div>
+          <TextField
+            className={this.props.classes.tripInput}
+            label="Starting Location"
+            variant="outlined"
+            value={this.state.addTrip.start_point}
+            onChange={this.handleTripInputChange('start_point')}
+            disabled={this.state.startDisabled ? true : false}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={this.getStartingLocation}
+          >
+            Get current Location
+          </Button>
+        </div>
+        <div>
+          <TextField
+            className={this.props.classes.tripInput}
+            label="Ending Location"
+            variant="outlined"
+            value={this.state.addTrip.end_point}
+            onChange={this.handleTripInputChange('end_point')}
+            disabled={this.state.endDisabled ? true : false}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={this.getEndingLocation}
+          >
+            Get current Location
+          </Button>
+        </div>
+        <div>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              className={this.props.classes.tripInput}
+              disableToolbar
+              autoOk
+              variant="inline"
+              format="MM/dd/yyyy"
+              label="Date of trip:"
+              value={this.state.addTrip.date}
+              onChange={this.handleTripDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+        <div>
+          <FormControlLabel
+            className={this.props.classes.tripInput}
+            control={<Checkbox name="roundTrip" color="primary" />}
+            label="Roundtrip?"
+            onChange={this.handleTripInputChange('roundtrip')}
+          />
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.cancelTrip}
+          className={this.props.classes.tripInput}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.submitTrip}
+          className={this.props.classes.tripInput}
+        >
           Add Trip
         </Button>
       </div>
@@ -286,4 +327,4 @@ class AddTripPage extends Component {
   }
 }
 
-export default connect(mapStoreToProps)(AddTripPage);
+export default withStyles(styling)(connect(mapStoreToProps)(AddTripPage));

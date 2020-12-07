@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
 import VehicleList from '../VehicleList/VehicleList';
 import './MyGaragePage.css';
+import Button from '@material-ui/core/Button';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -20,9 +21,17 @@ class MyGaragePage extends Component {
   render() {
     return (
       <div className="container">
-        <h1 style={{ textAlign: 'center' }}>{this.state.heading}</h1>
+        <h1 style={{ textAlign: 'center', color: '#22B1C2' }}>
+          {this.state.heading}
+        </h1>
         <div className="addbtn">
-          <button onClick={this.addVehicleClick}>Add a Vehicle</button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.addVehicleClick}
+          >
+            Add a Vehicle
+          </Button>
         </div>
         <div>
           <VehicleList />

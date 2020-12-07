@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import mapStoreToProps from '../../redux/mapStoreToProps';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+import Swal from 'sweetalert2';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
 // Basic class component structure for React with default state
@@ -59,18 +59,43 @@ class VehicleDetailsEditPage extends Component {
       `/vehicle/details/${this.props.store.vehicleDetails.id}`
     );
   };
+  cancelVehicleDetails = (event) => {
+    this.props.history.push(
+      `/vehicle/details/${this.props.store.vehicleDetails.id}`
+    );
+  };
 
   deleteVehicle = (event) => {
-    let answer = window.confirm(
-      `Are you sure you want to DELETE ${this.props.store.vehicleDetails.name}? This will DELETE all MAINTENANCE and TRIP history.`
-    );
-    if (answer) {
-      this.props.dispatch({
-        type: 'DELETE_VEHICLE',
-        payload: this.props.store.vehicleDetails.id,
-      });
-      this.props.history.push('/garage');
-    }
+    Swal.fire({
+      title: `Are you sure you want to DELETE ${this.props.store.vehicleDetails.name}?`,
+      text:
+        "This will DELETE all MAINTENANCE and TRIP history. You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        this.props.dispatch({
+          type: 'DELETE_VEHICLE',
+          payload: this.props.store.vehicleDetails.id,
+        });
+        this.props.history.push('/garage');
+      }
+    });
+
+    // let answer = window.confirm(
+    //   `Are you sure you want to DELETE ${this.props.store.vehicleDetails.name}? This will DELETE all MAINTENANCE and TRIP history.`
+    // );
+    // if (answer) {
+    //   this.props.dispatch({
+    //     type: 'DELETE_VEHICLE',
+    //     payload: this.props.store.vehicleDetails.id,
+    //   });
+    //   this.props.history.push('/garage');
+    // }
   };
 
   render() {
@@ -104,6 +129,15 @@ class VehicleDetailsEditPage extends Component {
         <div>
           <Button
             variant="contained"
+            color="primary"
+            style={{ margin: '10px' }}
+            onClick={this.cancelVehicleDetails}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
             style={{ margin: '10px' }}
             onClick={this.saveVehicleDetails}
           >
@@ -111,6 +145,7 @@ class VehicleDetailsEditPage extends Component {
           </Button>
           <Button
             variant="contained"
+            color="primary"
             style={{ margin: '10px' }}
             onClick={this.deleteVehicle}
           >

@@ -8,11 +8,24 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+import './VehicleMaintenancePage.css';
+
 const { DateTime } = require('luxon');
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
 // component.
+
+const styling = (theme) =>
+  createStyles({
+    container: {
+      textAlign: 'center',
+    },
+  });
 class VehicleMaintenancePage extends Component {
   state = {
     heading: 'Class Component',
@@ -43,15 +56,28 @@ class VehicleMaintenancePage extends Component {
     );
   };
 
+  backToGarageClick = (event) => {
+    this.props.history.push(
+      `/vehicle/details/${this.props.store.vehicleDetails.id}`
+    );
+  };
+
   render() {
     return (
-      <div>
-        <div>
+      <Grid container className={this.props.classes.container}>
+        <Grid item xs={12}>
           <h1>Maintenance for {this.props.store.vehicleDetails.name}</h1>
-        </div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.backToGarageClick}
+          >
+            Back to {this.props.store.vehicleDetails.name}
+          </Button>
+        </Grid>
 
-        <div>
-          <h4>Current Oil</h4>
+        <Grid item xs={6}>
+          <h2>Current Oil</h2>
           {this.props.store.vehicleDetails.oil &&
             this.props.store.vehicleDetails.oil.map((oilItem, index) => {
               const oilDate = DateTime.fromISO(oilItem.date);
@@ -61,7 +87,7 @@ class VehicleMaintenancePage extends Component {
               if (oilItem.miles_left > oilItem.miles_allowed * 0.2) {
                 return (
                   <div key={index}>
-                    <p>Miles Drove: {oilItem.miles_drove}</p>
+                    <p>Miles Driven: {oilItem.miles_drove}</p>
                     <p>Date last changed: {humanOilDate}</p>
                     <p>
                       Miles left until next change:
@@ -73,13 +99,20 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{oilItem.miles_allowed}</strong>
                     </p>
-                    <button onClick={this.changeOilClick}>Change Oil</button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={this.changeOilClick}
+                    >
+                      Change Oil
+                    </Button>
+                    {/* <button onClick={this.changeOilClick}>Change Oil</button> */}
                   </div>
                 );
               } else {
                 return (
                   <div key={index}>
-                    <p>Miles Drove: {oilItem.miles_drove}</p>
+                    <p>Miles Driven: {oilItem.miles_drove}</p>
                     <p>Date last changed: {humanOilDate}</p>
                     <p>
                       Miles left until next change:
@@ -91,15 +124,22 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{oilItem.miles_allowed}</strong>
                     </p>
-                    <button onClick={this.changeOilClick}>Change Oil</button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={this.changeOilClick}
+                    >
+                      Change Oil
+                    </Button>
+                    {/* <button onClick={this.changeOilClick}>Change Oil</button> */}
                   </div>
                 );
               }
             })}
-        </div>
+        </Grid>
 
-        <div>
-          <h4>Current Tires</h4>
+        <Grid item xs={6}>
+          <h2>Current Tires</h2>
           {this.props.store.vehicleDetails.tires &&
             this.props.store.vehicleDetails.tires.map((tireItem, index) => {
               const tireDate = DateTime.fromISO(tireItem.date);
@@ -111,7 +151,7 @@ class VehicleMaintenancePage extends Component {
               if (tireItem.miles_left > tireItem.miles_allowed * 0.2) {
                 return (
                   <div key={index}>
-                    <p>Miles Drove: {tireItem.miles_drove}</p>
+                    <p>Miles Driven: {tireItem.miles_drove}</p>
                     <p>Date last changed: {humanTireDate}</p>
                     <p>
                       Miles left until next change:
@@ -123,15 +163,22 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{tireItem.miles_allowed}</strong>
                     </p>
-                    <button onClick={this.changeTiresClick}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={this.changeTiresClick}
+                    >
                       Change Tires
-                    </button>
+                    </Button>
+                    {/* <button onClick={this.changeTiresClick}>
+                      Change Tires
+                    </button> */}
                   </div>
                 );
               } else {
                 return (
                   <div key={index}>
-                    <p>Miles Drove: {tireItem.miles_drove}</p>
+                    <p>Miles Driven: {tireItem.miles_drove}</p>
                     <p>Date last changed: {humanTireDate}</p>
                     <p>
                       Miles left until next change:
@@ -143,24 +190,36 @@ class VehicleMaintenancePage extends Component {
                     <p>
                       Miles allowed: <strong>{tireItem.miles_allowed}</strong>
                     </p>
-                    <button onClick={this.changeTiresClick}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={this.changeTiresClick}
+                    >
                       Change Tires
-                    </button>
+                    </Button>
+                    {/* <button onClick={this.changeTiresClick}>
+                      Change Tires
+                    </button> */}
                   </div>
                 );
               }
             })}
-        </div>
+        </Grid>
 
-        <div>
+        <Grid item xs={12}>
           <h2>Maintenance History</h2>
-          <TableContainer component={Paper}>
+          <TableContainer
+            component={Paper}
+            style={{ margin: '10px', width: 'auto' }}
+          >
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Miles Drove</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>Date</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>Type</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>
+                    Miles Driven
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -197,10 +256,12 @@ class VehicleMaintenancePage extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 }
 
-export default connect(mapStoreToProps)(VehicleMaintenancePage);
+export default withStyles(styling)(
+  connect(mapStoreToProps)(VehicleMaintenancePage)
+);

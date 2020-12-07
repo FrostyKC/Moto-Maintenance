@@ -7,11 +7,22 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
 // component.
+
+const styling = (theme) =>
+  createStyles({
+    oilInput: {
+      margin: '10px',
+      verticalAlign: 'baseline',
+    },
+  });
+
 class ChangeOilPage extends Component {
   componentDidMount() {
     this.props.dispatch({
@@ -21,8 +32,9 @@ class ChangeOilPage extends Component {
   }
 
   state = {
-    heading: 'Change Oil Page',
+    heading: 'Change Oil',
     oilChange: {
+      active: true,
       date: new Date(),
       miles_drove: '',
       miles_allowed: '',
@@ -62,13 +74,18 @@ class ChangeOilPage extends Component {
       payload: this.state.oilChange,
     });
     this.props.history.push(
+      `/vehicle/details/${this.props.store.vehicleDetails.id}`
+    );
+  };
+  cancelOilClick = (event) => {
+    this.props.history.push(
       `/vehicle/maintenance/${this.props.store.vehicleDetails.id}`
     );
   };
 
   render() {
     return (
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
         </div>
@@ -76,6 +93,7 @@ class ChangeOilPage extends Component {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {/* <Grid container justify="space-around"> */}
             <KeyboardDatePicker
+              className={this.props.classes.oilInput}
               disableToolbar
               autoOk
               variant="inline"
@@ -90,20 +108,37 @@ class ChangeOilPage extends Component {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
           <TextField
+            className={this.props.classes.oilInput}
             margin="normal"
             helperText="Miles driven since last change"
             onChange={this.handleVehicleInputChange('miles_drove')}
           />
           <TextField
+            className={this.props.classes.oilInput}
             margin="normal"
             helperText="Miles allowed before change"
             onChange={this.handleVehicleInputChange('miles_allowed')}
           />
         </div>
-        <button onClick={this.changeOilClick}>Change Oil</button>
+        <Button
+          className={this.props.classes.oilInput}
+          variant="contained"
+          color="primary"
+          onClick={this.cancelOilClick}
+        >
+          Cancel
+        </Button>
+        <Button
+          className={this.props.classes.oilInput}
+          variant="contained"
+          color="secondary"
+          onClick={this.changeOilClick}
+        >
+          Change Oil
+        </Button>
       </div>
     );
   }
 }
 
-export default connect(mapStoreToProps)(ChangeOilPage);
+export default withStyles(styling)(connect(mapStoreToProps)(ChangeOilPage));

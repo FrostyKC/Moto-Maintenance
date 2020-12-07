@@ -10,6 +10,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import './VehicleDetailsPage.css';
+import Button from '@material-ui/core/Button';
+
 const { DateTime } = require('luxon');
 
 // Basic class component structure for React with default state
@@ -22,9 +25,11 @@ const styling = (theme) =>
     imgMedia: {
       width: '100%',
       backgroundSize: 'cover',
+      margin: '10px',
     },
     paper: {
       textAlign: 'center',
+      // margin: '5px',
     },
     maintenance: {
       display: 'inline',
@@ -78,7 +83,14 @@ class VehicleDetailsPage extends Component {
               src={this.props.store.vehicleDetails.image}
             />
             <div>
-              <button onClick={this.vehicleDetailsEditClick}>Edit</button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.vehicleDetailsEditClick}
+              >
+                Edit Vehicle
+              </Button>
+              {/* <button onClick={this.vehicleDetailsEditClick}>Edit</button> */}
             </div>
           </Grid>
 
@@ -112,7 +124,14 @@ class VehicleDetailsPage extends Component {
                 })}
             </Grid>
             <Grid item xs={4}>
-              <button onClick={this.vehicleDetailsViewClick}>View</button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.vehicleDetailsViewClick}
+              >
+                Service {this.props.store.vehicleDetails.name}
+              </Button>
+              {/* <button onClick={this.vehicleDetailsViewClick}>View</button> */}
             </Grid>
             <Grid item xs={4}>
               <h4>Tire Status</h4>
@@ -137,18 +156,33 @@ class VehicleDetailsPage extends Component {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} className={this.props.classes.paper}>
+        <Grid item xs={12}>
           <h2>Trips</h2>
-          <button onClick={this.vehicleDetailsAddTripClick}>Add a Trip</button>
-          <TableContainer component={Paper}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.vehicleDetailsAddTripClick}
+          >
+            Add a Trip
+          </Button>
+          {/* <button onClick={this.vehicleDetailsAddTripClick}>Add a Trip</button> */}
+          <TableContainer
+            component={Paper}
+            style={{ margin: '10px', width: 'auto' }}
+            className={this.props.classes.paper}
+          >
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Starting Location</TableCell>
-                  <TableCell>Ending Location</TableCell>
-                  <TableCell>Total distance</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>Date</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>Name</TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>
+                    Starting Location
+                  </TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>
+                    Ending Location
+                  </TableCell>
+                  <TableCell style={{ color: '#22B1C2' }}>Distance</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -160,7 +194,9 @@ class VehicleDetailsPage extends Component {
 
                   return (
                     <TableRow key={index}>
-                      <TableCell>{humanTripDate}</TableCell>
+                      <TableCell component="th" scope="row">
+                        {humanTripDate}
+                      </TableCell>
                       <TableCell>{tripItem.name}</TableCell>
                       <TableCell>{tripItem.start_point}</TableCell>
                       <TableCell>{tripItem.end_point}</TableCell>
@@ -171,19 +207,6 @@ class VehicleDetailsPage extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          {/* {this.props.store.trips.map((tripItem, index) => {
-            const tripDate = DateTime.fromISO(tripItem.date);
-            const humanTripDate = tripDate.toLocaleString(DateTime.DATE_SHORT);
-            return (
-              <p key={index}>
-                {humanTripDate} {}
-                {tripItem.name} {}
-                {tripItem.start_point} {}
-                {tripItem.end_point} {}
-                {tripItem.total} miles
-              </p>
-            );
-          })} */}
         </Grid>
       </Grid>
     );

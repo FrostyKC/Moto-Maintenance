@@ -7,7 +7,7 @@ const {
 
 router.get('/:id', (req, res) => {
   const queryText = `SELECT * FROM "trips"
-  WHERE vehicle_id = $1;`;
+  WHERE vehicle_id = $1 ORDER BY date desc;`;
   const vehicleId = req.params.id;
   pool
     .query(queryText, [vehicleId])
