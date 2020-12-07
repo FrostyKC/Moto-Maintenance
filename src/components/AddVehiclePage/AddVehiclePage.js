@@ -8,14 +8,26 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
 // component.
+
+const styling = (theme) =>
+  createStyles({
+    vehicleInput: {
+      // width: '700px',
+      margin: '10px',
+      verticalAlign: 'baseline',
+    },
+  });
+
 class AddVehiclePage extends Component {
   state = {
-    heading: 'Add Vehicle Page',
+    heading: 'Add Vehicle',
     newVehicle: {
       name: '',
       image: '',
@@ -65,19 +77,24 @@ class AddVehiclePage extends Component {
     });
     this.props.history.push('/garage');
   };
+  backToGarageClick = (event) => {
+    this.props.history.push('/garage');
+  };
 
   render() {
     return (
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
         </div>
         <div>
           <TextField
+            className={this.props.classes.vehicleInput}
             label="Vehicle Name"
             onChange={this.handleVehicleInputChange('name')}
           />
           <TextField
+            className={this.props.classes.vehicleInput}
             label="Image URL"
             onChange={this.handleVehicleInputChange('image')}
           />
@@ -89,6 +106,7 @@ class AddVehiclePage extends Component {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {/* <Grid container justify="space-around"> */}
             <KeyboardDatePicker
+              className={this.props.classes.vehicleInput}
               disableToolbar
               autoOk
               variant="inline"
@@ -104,12 +122,12 @@ class AddVehiclePage extends Component {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
           <TextField
-            margin="normal"
+            className={this.props.classes.vehicleInput}
             helperText="Miles driven since last change"
             onChange={this.handleVehicleInputChange('oil_miles_drove')}
           />
           <TextField
-            margin="normal"
+            className={this.props.classes.vehicleInput}
             helperText="Miles allowed before change"
             onChange={this.handleVehicleInputChange('oil_miles_allowed')}
           />
@@ -121,6 +139,7 @@ class AddVehiclePage extends Component {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {/* <Grid container justify="space-around"> */}
             <KeyboardDatePicker
+              className={this.props.classes.vehicleInput}
               autoOk
               disableToolbar
               variant="inline"
@@ -136,20 +155,38 @@ class AddVehiclePage extends Component {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
           <TextField
+            className={this.props.classes.vehicleInput}
             margin="normal"
             helperText="Miles driven since last change"
             onChange={this.handleVehicleInputChange('tires_miles_drove')}
           />
           <TextField
+            className={this.props.classes.vehicleInput}
             margin="normal"
             helperText="Miles allowed before change"
             onChange={this.handleVehicleInputChange('tires_miles_allowed')}
           />
         </div>
-        <button onClick={this.addToGarageClick}>Add to Garage</button>
+        <Button
+          className={this.props.classes.vehicleInput}
+          variant="contained"
+          color="primary"
+          onClick={this.backToGarageClick}
+        >
+          Back to Garage
+        </Button>
+        <Button
+          className={this.props.classes.vehicleInput}
+          variant="contained"
+          color="secondary"
+          onClick={this.addToGarageClick}
+        >
+          Add to Garage
+        </Button>
+        {/* <button onClick={this.addToGarageClick}>Add to Garage</button> */}
       </div>
     );
   }
 }
 
-export default connect(mapStoreToProps)(AddVehiclePage);
+export default withStyles(styling)(connect(mapStoreToProps)(AddVehiclePage));

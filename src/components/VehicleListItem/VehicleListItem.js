@@ -43,7 +43,12 @@ class VehicleListItem extends Component {
               title={this.props.vehicleItem.name}
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="h2"
+                color="secondary"
+              >
                 {this.props.vehicleItem.name}
               </Typography>
               <Typography
@@ -51,6 +56,7 @@ class VehicleListItem extends Component {
                 color="textPrimary"
                 component="p"
                 display="inline"
+                // color="secondary"
               >
                 Oil: {}
               </Typography>
@@ -80,6 +86,7 @@ class VehicleListItem extends Component {
                 color="textPrimary"
                 display="inline"
                 component="p"
+                // color="secondary"
               >
                 Tires: {}
               </Typography>

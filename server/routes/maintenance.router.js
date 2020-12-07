@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 
 router.get('/:id', (req, res) => {
   const oilQueryText = `SELECT * FROM "oil"
-      WHERE oil.vehicle_id = $1;`;
+      WHERE oil.vehicle_id = $1 ORDER BY date desc;`;
 
   const vehicleId = req.params.id;
   pool
@@ -13,7 +13,7 @@ router.get('/:id', (req, res) => {
       const vehicleOil = result.rows;
 
       const tiresQueryText = `SELECT * FROM "tires"
-          WHERE tires.vehicle_id = $1;`;
+          WHERE tires.vehicle_id = $1 ORDER BY date desc;`;
 
       pool
         .query(tiresQueryText, [vehicleId])
@@ -60,7 +60,7 @@ router.post('/oil', (req, res) => {
 router.post('/tires', (req, res) => {
   const queryText = `INSERT INTO tires ("active", "date", "miles_drove", "miles_allowed", "miles_left", "vehicle_id") VALUES ($1, $2, $3, $4, $5, $6);`;
   const queryValues = [
-    true,
+    req.body.active,
     req.body.date,
     req.body.miles_drove,
     req.body.miles_allowed,
