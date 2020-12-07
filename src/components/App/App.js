@@ -58,6 +58,11 @@ const customTheme = createMuiTheme({
         color: '#22B1C2',
       },
     },
+    MuiPaper: {
+      root: {
+        backgroundColor: '#060606c2',
+      },
+    },
   },
 });
 
