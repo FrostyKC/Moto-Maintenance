@@ -88,7 +88,7 @@ class VehicleDetailsPage extends Component {
                 color="primary"
                 onClick={this.vehicleDetailsEditClick}
               >
-                Edit Vehicle
+                Edit {this.props.store.vehicleDetails.name}
               </Button>
               {/* <button onClick={this.vehicleDetailsEditClick}>Edit</button> */}
             </div>

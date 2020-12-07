@@ -11,7 +11,8 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   tires.miles_allowed as tires_allowed, tires.miles_left as tires_left FROM vehicles
   JOIN "oil" ON vehicles.id = oil.vehicle_id
   JOIN "tires" ON vehicles.id = tires.vehicle_id
-  WHERE "user_id" = $1 AND oil.active = true AND tires.active = true;`;
+  WHERE "user_id" = $1 AND oil.active = true AND tires.active = true
+  ORDER BY id;`;
   pool
     .query(queryText, [req.user.id])
     .then((result) => {
