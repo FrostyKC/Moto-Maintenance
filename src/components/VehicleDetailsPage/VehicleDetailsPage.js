@@ -46,9 +46,6 @@ class VehicleDetailsPage extends Component {
       type: 'GET_TRIPS',
       payload: this.props.match.params.id,
     });
-    console.log(this.props.store.vehicleDetails);
-    console.log(this.props.store.vehicleDetails.oil);
-    console.log(this.props.store.trips);
   }
 
   vehicleDetailsEditClick = (event) => {

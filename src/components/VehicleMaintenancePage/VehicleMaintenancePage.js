@@ -40,9 +40,6 @@ class VehicleMaintenancePage extends Component {
       type: 'GET_VEHICLE_DETAILS',
       payload: this.props.match.params.id,
     });
-    console.log(this.props.store.maintenance);
-    console.log(this.props.store.vehicleDetails);
-    console.log(this.props.store.vehicleDetails.oil);
   }
 
   changeOilClick = (event) => {
@@ -146,8 +143,8 @@ class VehicleMaintenancePage extends Component {
               const humanTireDate = tireDate.toLocaleString(
                 DateTime.DATE_SHORT
               );
-              console.log(tireDate);
-              console.log(humanTireDate);
+              // console.log(tireDate);
+              // console.log(humanTireDate);
               if (tireItem.miles_left > tireItem.miles_allowed * 0.2) {
                 return (
                   <div key={index}>

@@ -42,11 +42,10 @@ class AddTripPage extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     if ('geolocation' in navigator) {
-      console.log('it will work');
+      console.log('Geolocation will work.');
     } else {
-      console.log('geolocation is not available on this browser');
+      console.log('Geolocation is not available on this browser.');
     }
     this.props.dispatch({
       type: 'GET_VEHICLE_DETAILS',
@@ -82,9 +81,6 @@ class AddTripPage extends Component {
   startSuccess = (pos) => {
     let cords = pos.coords;
 
-    console.log('Your current position is:');
-    console.log(`Latitude : ${cords.latitude}`);
-    console.log(`Longitude: ${cords.longitude}`);
     this.setState({
       addTrip: {
         ...this.state.addTrip,
@@ -102,9 +98,6 @@ class AddTripPage extends Component {
   endingSuccess = (pos) => {
     let cords = pos.coords;
 
-    console.log('Your current position is:');
-    console.log(`Latitude : ${cords.latitude}`);
-    console.log(`Longitude: ${cords.longitude}`);
     this.setState({
       addTrip: {
         ...this.state.addTrip,
@@ -146,8 +139,6 @@ class AddTripPage extends Component {
         travelMode: 'DRIVING',
       },
       (response, status) => {
-        console.log(response);
-        console.log(status);
         if (status !== 'OK') {
           alert(`Error was: ${status}`);
         } else {
@@ -157,14 +148,12 @@ class AddTripPage extends Component {
           // let distance_value = distance.value;
           let distance_text = distance.text;
           let miles = parseInt(
-            distance_text.substring(0, distance_text.length - 3)
+            distance_text
+              .substring(0, distance_text.length - 3)
+              .replace(',', '')
           );
-          console.log(miles);
-          console.log(this.state.addTrip.roundtrip);
           if (this.state.addTrip.roundtrip) {
-            console.log(miles);
             miles *= 2;
-            console.log('before', miles);
           }
           this.setState({
             addTrip: {
@@ -178,48 +167,10 @@ class AddTripPage extends Component {
             type: 'POST_TRIPS',
             payload: { ...this.state.addTrip, id: this.props.match.params.id },
           });
-          // this.props.dispatch({
-          //   type: 'UPDATE_TRIP_MAINTENANCE',
-          //   payload: this.state.addTrip,
-          // });
           this.props.history.push(
             `/vehicle/details/${this.props.store.vehicleDetails.id}`
           );
-
-          // for (let i = 0; i < originList.length; i++) {
-          //   let results = response.rows[i].elements;
-          //   for (let j = 0; j < results.length; j++) {
-          //     let element = results[j];
-          //     let distance = parseInt(element.distance.text);
-          //     let from = originList[i];
-          //     let to = destinationList[j];
-          //     console.log(
-          //       `Starting Location: ${from} Ending Location: ${to} Distance: ${distance} miles`
-          //     );
-          //     if (this.state.addTrip.roundtrip) {
-          //       distance *= 2;
-          //       console.log(distance);
-          //     }
-          //     console.log(this);
-          // this.setState({
-          //   addTrip: {
-          //     ...this.state.addTrip,
-          //     start_point: from,
-          //     end_point: to,
-          //     total: distance,
-          //   },
-          // });
-          //   }
-          // }
         }
-        console.log(this.state);
-        // this.props.dispatch({
-        //   type: 'POST_TRIPS',
-        //   payload: this.state.addTrip,
-        // });
-        // this.props.history.push(
-        //   `/vehicle/details/${this.props.store.vehicleDetails.id}`
-        // );
       }
     );
 
@@ -231,12 +182,6 @@ class AddTripPage extends Component {
       <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
-          {/* <pre>
-            {JSON.stringify(
-              `${this.state.startDisabled} ${this.state.endDisabled}`
-            )}
-          </pre>
-          <pre>{JSON.stringify(this.state.addTrip)}</pre> */}
         </div>
         <div>
           <TextField
