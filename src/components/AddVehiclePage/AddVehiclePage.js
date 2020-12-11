@@ -10,6 +10,7 @@ import {
 } from '@material-ui/pickers';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import ImageUpload from '../ImageUpload/ImageUpload';
 
 // Basic class component structure for React with default state
 // value setup. When making a new component be sure to replace
@@ -93,11 +94,12 @@ class AddVehiclePage extends Component {
             label="Vehicle Name"
             onChange={this.handleVehicleInputChange('name')}
           />
-          <TextField
+          <ImageUpload />
+          {/* <TextField
             className={this.props.classes.vehicleInput}
             label="Image URL"
             onChange={this.handleVehicleInputChange('image')}
-          />
+          /> */}
         </div>
         <div>
           <h4>Oil</h4>
