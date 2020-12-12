@@ -21,9 +21,13 @@ const styling = (theme) =>
   });
 
 const imgUploadStyle = {
-  width: '200px',
-  height: '113px',
-  border: '3px inset #22b1c2',
+  position: 'relative',
+  cursor: 'pointer',
+  overflow: 'hidden',
+  width: '300px',
+  height: 'auto',
+  border: '3px inset #e7363f',
+  backgroundColor: '#4d4d4d',
   display: 'inline-block',
 };
 
@@ -31,7 +35,7 @@ class AddVehiclePage extends Component {
   state = {
     heading: 'Add Vehicle',
     newVehicle: {
-      name: '',
+      name: 'Vehicle Name',
       image: '',
       user_id: this.props.store.user.id,
       oil_date: new Date(),
@@ -118,15 +122,20 @@ class AddVehiclePage extends Component {
             onChange={this.handleVehicleInputChange('image')}
           />
 
-          <h5>or</h5>
-          <h5 style={{ color: '#e7363f' }}>Click box below to upload IMG</h5>
+          <h4>or</h4>
           <DropzoneS3Uploader
             onFinish={this.handleFinishedUpload}
             s3Url={s3Url}
             style={imgUploadStyle}
             maxSize={1024 * 1024 * 5}
             upload={uploadOptions}
-          />
+          >
+            <p style={{ color: '#22b1c2' }}>Click here to upload IMG</p>
+            <img src={this.state.newVehicle.image}></img>
+            <p style={{ color: '#22b1c2' }}>
+              IMG will appear when upload is complete
+            </p>
+          </DropzoneS3Uploader>
         </div>
         <div>
           <h4>Oil</h4>
