@@ -10,12 +10,7 @@ import {
 } from '@material-ui/pickers';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import ImageUpload from '../ImageUpload/ImageUpload';
-
-// Basic class component structure for React with default state
-// value setup. When making a new component be sure to replace
-// the component name TemplateClass with the name for the new
-// component.
+import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 
 const styling = (theme) =>
   createStyles({
@@ -82,24 +77,53 @@ class AddVehiclePage extends Component {
     this.props.history.push('/garage');
   };
 
+  handleFinishedUpload = (info) => {
+    console.log(info);
+    // console.log('File uploaded with filename', info.filename);
+    console.log('Access it on s3 at', info.fileUrl);
+
+    this.setState({
+      newVehicle: {
+        ...this.state.newVehicle,
+        image: info.fileUrl,
+      },
+    });
+  };
+
   render() {
+    const uploadOptions = {
+      server: 'http://localhost:5000',
+      // signingUrlQueryParams: {uploadType: 'avatar'},
+    };
+    const s3Url = 'https://frostybucket.s3.amazonaws.com';
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
         </div>
         <div>
+          <pre>{JSON.stringify(this.state.newVehicle)}</pre>
           <TextField
             className={this.props.classes.vehicleInput}
             label="Vehicle Name"
             onChange={this.handleVehicleInputChange('name')}
           />
-          <ImageUpload />
-          {/* <TextField
+        </div>
+        <div>
+          <TextField
             className={this.props.classes.vehicleInput}
             label="Image URL"
             onChange={this.handleVehicleInputChange('image')}
-          /> */}
+          />
+
+          <h5>or</h5>
+
+          <DropzoneS3Uploader
+            onFinish={this.handleFinishedUpload}
+            s3Url={s3Url}
+            maxSize={1024 * 1024 * 5}
+            upload={uploadOptions}
+          />
         </div>
         <div>
           <h4>Oil</h4>
