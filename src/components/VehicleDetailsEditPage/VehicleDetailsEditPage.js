@@ -5,11 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Swal from 'sweetalert2';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-
-// Basic class component structure for React with default state
-// value setup. When making a new component be sure to replace
-// the component name TemplateClass with the name for the new
-// component.
+import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 
 const styling = (theme) =>
   createStyles({
@@ -18,6 +14,13 @@ const styling = (theme) =>
       margin: '10px',
     },
   });
+
+const imgUploadStyle = {
+  width: '200px',
+  height: '113px',
+  border: '3px inset #22b1c2',
+  display: 'inline-block',
+};
 
 class VehicleDetailsEditPage extends Component {
   state = {
@@ -87,7 +90,21 @@ class VehicleDetailsEditPage extends Component {
     });
   };
 
+  handleFinishedUpload = (info) => {
+    this.setState({
+      editVehicle: {
+        ...this.state.editVehicle,
+        image: info.fileUrl,
+      },
+    });
+  };
+
   render() {
+    const uploadOptions = {
+      // server: 'https://serene-springs-24528.herokuapp.com',
+      server: 'http://localhost:5000',
+    };
+    const s3Url = 'https://frostybucket.s3.amazonaws.com';
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
@@ -106,12 +123,21 @@ class VehicleDetailsEditPage extends Component {
         <div>
           <TextField
             className={this.props.classes.vehicleInput}
-            label="Vehicle Image"
+            label="Vehicle Image URL"
             variant="filled"
             value={this.state.editVehicle.image}
             name="image"
             style={{ width: '700px' }}
             onChange={(event) => this.handleChangeField(event, 'image')}
+          />
+          <h5>or</h5>
+          <h5 style={{ color: '#e7363f' }}>Click box below to upload IMG</h5>
+          <DropzoneS3Uploader
+            onFinish={this.handleFinishedUpload}
+            s3Url={s3Url}
+            style={imgUploadStyle}
+            maxSize={1024 * 1024 * 5}
+            upload={uploadOptions}
           />
         </div>
         <div>
