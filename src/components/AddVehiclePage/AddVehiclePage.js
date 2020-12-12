@@ -10,20 +10,22 @@ import {
 } from '@material-ui/pickers';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-
-// Basic class component structure for React with default state
-// value setup. When making a new component be sure to replace
-// the component name TemplateClass with the name for the new
-// component.
+import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 
 const styling = (theme) =>
   createStyles({
     vehicleInput: {
-      // width: '700px',
       margin: '10px',
       verticalAlign: 'baseline',
     },
   });
+
+const imgUploadStyle = {
+  width: '200px',
+  height: '113px',
+  border: '3px inset #22b1c2',
+  display: 'inline-block',
+};
 
 class AddVehiclePage extends Component {
   state = {
@@ -33,12 +35,12 @@ class AddVehiclePage extends Component {
       image: '',
       user_id: this.props.store.user.id,
       oil_date: new Date(),
-      oil_miles_drove: '',
-      oil_miles_allowed: '',
+      oil_miles_drove: 0,
+      oil_miles_allowed: 3000,
       oil_vehicle_id: '',
       tires_date: new Date(),
-      tires_miles_drove: '',
-      tires_miles_allowed: '',
+      tires_miles_drove: 0,
+      tires_miles_allowed: 10000,
       tires_vehicle_id: '',
     },
   };
@@ -81,22 +83,49 @@ class AddVehiclePage extends Component {
     this.props.history.push('/garage');
   };
 
+  handleFinishedUpload = (info) => {
+    this.setState({
+      newVehicle: {
+        ...this.state.newVehicle,
+        image: info.fileUrl,
+      },
+    });
+  };
+
   render() {
+    const uploadOptions = {
+      server: 'http://localhost:5000',
+      // signingUrlQueryParams: {uploadType: 'avatar'},
+    };
+    const s3Url = 'https://frostybucket.s3.amazonaws.com';
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
           <h2>{this.state.heading}</h2>
         </div>
         <div>
+          {/* <pre>{JSON.stringify(this.state.newVehicle)}</pre> */}
           <TextField
             className={this.props.classes.vehicleInput}
             label="Vehicle Name"
             onChange={this.handleVehicleInputChange('name')}
           />
+        </div>
+        <div>
           <TextField
             className={this.props.classes.vehicleInput}
             label="Image URL"
             onChange={this.handleVehicleInputChange('image')}
+          />
+
+          <h5>or</h5>
+          <h5 style={{ color: '#e7363f' }}>Click box below to upload IMG</h5>
+          <DropzoneS3Uploader
+            onFinish={this.handleFinishedUpload}
+            s3Url={s3Url}
+            style={imgUploadStyle}
+            maxSize={1024 * 1024 * 5}
+            upload={uploadOptions}
           />
         </div>
         <div>
@@ -122,11 +151,13 @@ class AddVehiclePage extends Component {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
           <TextField
+            value={this.state.newVehicle.oil_miles_drove}
             className={this.props.classes.vehicleInput}
             helperText="Miles driven since last change"
             onChange={this.handleVehicleInputChange('oil_miles_drove')}
           />
           <TextField
+            value={this.state.newVehicle.oil_miles_allowed}
             className={this.props.classes.vehicleInput}
             helperText="Miles allowed before change"
             onChange={this.handleVehicleInputChange('oil_miles_allowed')}
@@ -155,12 +186,14 @@ class AddVehiclePage extends Component {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
           <TextField
+            value={this.state.newVehicle.tires_miles_drove}
             className={this.props.classes.vehicleInput}
             margin="normal"
             helperText="Miles driven since last change"
             onChange={this.handleVehicleInputChange('tires_miles_drove')}
           />
           <TextField
+            value={this.state.newVehicle.tires_miles_allowed}
             className={this.props.classes.vehicleInput}
             margin="normal"
             helperText="Miles allowed before change"
