@@ -40,7 +40,7 @@ Create a new database called `moto_maintenance` and run the queries in `database
 
 1. Login/Register to gain access to the app.
 2. Once logged in `Add a Vehicle`, fill out the form and `Add to Garage`.
-3. When you take a trip with the vehicle you can log it by clicking on the vehicle on `My Garage`, then selecting `Add a Trip`. Here fill out the form, selecting `Get Current Location` will grab the current devices coordinates for starting/ending locations. On `Add Trip` the app wll calculate the distance in miles and maintenance values will be effected.
+3. When you take a trip with the vehicle you can log it by selecting the vehicle in `My Garage`, then selecting `Add a Trip`. Here fill out the form, selecting `Get Current Location` will grab the current devices coordinates for starting/ending locations. On `Add Trip` the app will calculate the distance in miles and maintenance values will be adjusted.
 4. When a service is needed select the vehicle from `My Garage`, then select `Service (vehicle name)`. Here you can select `Change Oil` or `Change Tires`. Fill out the form, select `Change Oil/Tires`, and your vehicle is now serviced.
 
 # Built with
