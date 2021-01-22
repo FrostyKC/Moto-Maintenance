@@ -105,8 +105,8 @@ class VehicleDetailsEditPage extends Component {
 
   render() {
     const uploadOptions = {
-      server: 'https://serene-springs-24528.herokuapp.com',
-      // server: 'http://localhost:5000',
+      // server: 'https://serene-springs-24528.herokuapp.com',
+      server: 'http://localhost:5000',
     };
     const s3Url = 'https://frostybucket.s3.amazonaws.com';
     return (
